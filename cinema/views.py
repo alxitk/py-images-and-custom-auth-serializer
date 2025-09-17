@@ -9,6 +9,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 from cinema.permissions import IsAdminOrIfAuthenticatedReadOnly
@@ -113,10 +114,11 @@ class MovieViewSet(
         methods=["POST"],
         detail=True,
         url_path="upload-image",
+        parser_classes=(MultiPartParser, FormParser),
     )
     def upload_image(self, request, pk=None):
         item = self.get_object()
-        serializer = self.get_serializer(item, data=request.data)
+        serializer = self.get_serializer(item, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()

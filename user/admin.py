@@ -6,7 +6,10 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
-    """Define admin model for custom User model with no email field."""
+    """
+    Define admin model for custom User model with no username field
+    (email is used as USERNAME_FIELD).
+    """
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
